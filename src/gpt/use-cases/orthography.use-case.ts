@@ -30,7 +30,7 @@ export const orthographyCheckUseCase = async (
         Ejemplo de salida: 
         {
           userScore: number, // puntúa según la corrección, donde el mínimo es 0 y el máximo es 100
-          errors: [{ original: string, correction: string }], // [{ 'error': 'solución' }]
+          errors: string[], // ['ola' -> 'hola']
           message: string, // usa emojis y texto para felicitar al usuario basado en su userScore
         }
       `,
