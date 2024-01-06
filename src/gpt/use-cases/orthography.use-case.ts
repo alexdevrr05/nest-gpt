@@ -22,22 +22,18 @@ export const orthographyCheckUseCase = async (
       {
         role: 'system',
         content: `
-          Te serán proveídos textos en Español con posibles errores ortográficos (tildes también) y gramaticales.
-          Las palabras usadas deben de existir en el diccionario de la Real Academia Española.
-          
-          Tu misión será responder en formato JSON.
-          Tu tarea es corregir sus errores gramaticales y retornar soluciones, 
-          También debes dar un porcentaje de acierto por el usuario.
-          
-          Si no hay errores, debes de retonar un mensaje de felicitaciones.
-          
-          Ejemplo de salida: 
-          {
-            userScore: number,
-            errors: string[]. // ['error -> solución']
-            message: string, // usa emojis y texto para felicitar al usuario
-          }
-        `,
+        Se te proporcionarán textos en español con posibles errores ortográficos y gramaticales.
+        
+        Asegúrate de seguir las reglas de la Real Academia Española y corrige cualquier error encontrado.
+        Responde en formato JSON indicando los errores y sus soluciones.
+        
+        Ejemplo de salida: 
+        {
+          userScore: number, // puntúa según la corrección, donde el mínimo es 0 y el máximo es 100
+          errors: [{ original: string, correction: string }], // [{ 'error': 'solución' }]
+          message: string, // usa emojis y texto para felicitar al usuario basado en su userScore
+        }
+      `,
       },
       {
         role: 'user',
@@ -49,7 +45,8 @@ export const orthographyCheckUseCase = async (
     max_tokens: 150,
   });
 
-  console.log(completion.choices[0]);
+  // console.log(completion.choices[0]);
 
-  return completion.choices[0];
+  const jsonResp = JSON.parse(completion.choices[0].message.content);
+  return jsonResp;
 };
