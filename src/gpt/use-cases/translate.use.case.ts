@@ -16,15 +16,14 @@ export const translateUseCase = async (openai: OpenAI, options: Options) => {
             Traduce el siguiente texto al idioma ${lang}:${prompt}
         `,
       },
-      {
-        role: 'user',
-        content: prompt,
-      },
     ],
     model: 'gpt-3.5-turbo',
     temperature: 0.3,
     max_tokens: 150,
   });
 
-  return completion.choices[0].message.content;
+  // Regresar solo el texto (no json) es mas dificil de escalar despues
+  return {
+    message: completion.choices[0].message.content,
+  };
 };
