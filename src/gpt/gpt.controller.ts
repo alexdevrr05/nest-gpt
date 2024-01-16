@@ -40,4 +40,21 @@ export class GptController {
   translate(@Body() trasnlateDto: TrasnlateDto) {
     return this.gptService.translate(trasnlateDto);
   }
+  @Post('translate-stream')
+  async translateStream(
+    @Body() trasnlateDto: TrasnlateDto,
+    @Res() res: Response,
+  ) {
+    const stream = await this.gptService.translateStream(trasnlateDto);
+    res.setHeader('Content-Type', 'application/json');
+    res.status(HttpStatus.OK);
+
+    for await (const chunk of stream) {
+      const piece = chunk.choices[0].delta.content || '';
+      // console.log(piece); // mensaje construyendose
+      res.write(piece);
+    }
+
+    res.end();
+  }
 }

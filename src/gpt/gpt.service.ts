@@ -7,6 +7,7 @@ import {
   prosConsDicusserUseCase,
   prosConsStreamUseCase,
   translateUseCase,
+  translateStreamUseCase,
 } from './use-cases';
 
 @Injectable()
@@ -33,6 +34,12 @@ export class GptService {
   }
   async translate({ prompt, lang }: TrasnlateDto) {
     return await translateUseCase(this.openai, {
+      prompt,
+      lang,
+    });
+  }
+  async translateStream({ prompt, lang }: TrasnlateDto) {
+    return await translateStreamUseCase(this.openai, {
       prompt,
       lang,
     });

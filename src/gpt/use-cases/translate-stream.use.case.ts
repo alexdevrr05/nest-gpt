@@ -5,14 +5,10 @@ interface Options {
   lang: string;
 }
 
-export const translateStreamUseCase = async (
-  openai: OpenAI,
-  options: Options,
-) => {
+export const translateUseCase = async (openai: OpenAI, options: Options) => {
   const { prompt, lang } = options;
 
-  return await openai.chat.completions.create({
-    stream: true,
+  const completion = await openai.chat.completions.create({
     messages: [
       {
         role: 'system',
@@ -25,4 +21,9 @@ export const translateStreamUseCase = async (
     temperature: 0.3,
     max_tokens: 150,
   });
+
+  // Regresar solo el texto (no json) es mas dificil de escalar despues
+  return {
+    message: completion.choices[0].message.content,
+  };
 };
