@@ -1,4 +1,6 @@
+import * as path from 'path';
 import { Injectable } from '@nestjs/common';
+
 import OpenAI from 'openai';
 
 import {
@@ -55,5 +57,13 @@ export class GptService {
       prompt,
       voice,
     });
+  }
+  async textToAudioGetter(audioId: string) {
+    const folderPath = path.resolve(
+      __dirname,
+      `../../generated/audios/${audioId}.mp3`,
+    );
+
+    return folderPath;
   }
 }
