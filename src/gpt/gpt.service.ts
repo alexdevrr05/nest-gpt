@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { Injectable } from '@nestjs/common';
+import * as fs from 'fs';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import OpenAI from 'openai';
 
@@ -59,11 +60,15 @@ export class GptService {
     });
   }
   async textToAudioGetter(audioId: string) {
-    const folderPath = path.resolve(
+    const filepath = path.resolve(
       __dirname,
       `../../generated/audios/${audioId}.mp3`,
     );
 
-    return folderPath;
+    const wasFound = fs.existsSync(filepath);
+
+    if (!wasFound) throw new NotFoundException(`File ${audioId} not found`);
+
+    return filepath;
   }
 }
