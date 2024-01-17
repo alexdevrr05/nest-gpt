@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 
 import { GptService } from './gpt.service';
-import { OrthographyDto, TrasnlateDto } from './dtos';
+import { OrthographyDto, TextToAudioDto, TrasnlateDto } from './dtos';
 import { ProsConsDiscusserDto } from './dtos/pros-cons-discusser.dto';
 
 @Controller('gpt')
@@ -56,5 +56,9 @@ export class GptController {
     }
 
     res.end();
+  }
+  @Post('text-to-audio')
+  textToAudio(@Body() textToAudioDto: TextToAudioDto) {
+    return this.gptService.textToAudio(textToAudioDto);
   }
 }
